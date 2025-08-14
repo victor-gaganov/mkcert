@@ -77,7 +77,7 @@ const advancedUsage = `Advanced options:
 	    root CA into. Options are: "system", "java" and "nss" (includes
 	    Firefox). Autodetected by default.
 
-	expire-month (custom expire date)
+	-expire-month (custom expire date)
 		Set a cutom expire date in month starting from issue date. Use this
 		to make very long lasting certs. Keep in mind that some systems
 		may reject certs that expire after more than 825 days 
