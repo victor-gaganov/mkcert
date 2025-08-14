@@ -77,6 +77,11 @@ const advancedUsage = `Advanced options:
 	    root CA into. Options are: "system", "java" and "nss" (includes
 	    Firefox). Autodetected by default.
 
+	expire-month (custom expire date)
+		Set a cutom expire date in month starting from issue date. Use this
+		to make very long lasting certs. Keep in mind that some systems
+		may reject certs that expire after more than 825 days 
+
 `
 
 // Version can be set at link time to override debug.BuildInfo.Main.Version,
@@ -102,6 +107,7 @@ func main() {
 		certFileFlag  = flag.String("cert-file", "", "")
 		keyFileFlag   = flag.String("key-file", "", "")
 		p12FileFlag   = flag.String("p12-file", "", "")
+		expireMonth   = flag.Int("expire-month", 26, "") // < than default in original impl
 		versionFlag   = flag.Bool("version", false, "")
 	)
 	flag.Usage = func() {
@@ -146,6 +152,7 @@ func main() {
 		installMode: *installFlag, uninstallMode: *uninstallFlag, csrPath: *csrFlag,
 		pkcs12: *pkcs12Flag, ecdsa: *ecdsaFlag, client: *clientFlag,
 		certFile: *certFileFlag, keyFile: *keyFileFlag, p12File: *p12FileFlag,
+		expireMonth: *expireMonth,
 	}).Run(flag.Args())
 }
 
@@ -153,6 +160,7 @@ const rootName = "rootCA.pem"
 const rootKeyName = "rootCA-key.pem"
 
 type mkcert struct {
+	expireMonth                int
 	installMode, uninstallMode bool
 	pkcs12, ecdsa, client      bool
 	keyFile, certFile, p12File string
